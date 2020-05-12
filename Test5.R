@@ -8,6 +8,7 @@
 #####
 NCT<-getStudyFields(expr="COVID+AND+hydroxychloroquine", fields=c("NCTId"))
 NCT
+
 ########
 # Sortir outcomes d'un fichier XML 
 # outcomesXML()
@@ -26,6 +27,7 @@ EC1_outcomes <- outcomesXML(file = "NCT03478891.xml")
 View(EC1_outcomes)
 EC2_outcomes <- outcomesXML(file = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail/AllPublicXML/NCT0434xxxx/NCT04349228.xml")
 View(EC2_outcomes)
+
 ########
 # Chemin d'accès vers 1 fichier
 # pathFile()
@@ -50,6 +52,7 @@ ei2
 #' path<-pathFile(NCT="NCT04150042", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
 ei3 <- pathFile(NCT="NCT04371406", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
 ei3
+
 ########
 # Sortir outcomes a partir de queries
 # clintri_outcomes()
@@ -61,8 +64,8 @@ clintri_outcomes<-function(expr, fields = "NCTid", locPath){
     xml.file <- pathFile(NCTid = NCTid.list[i], locPath = locPath)
     outcomes <- rbind(outcomesXML(file = xml.file))
   }
+  return(outcomes)
 }
-
 #####
 # Tests
 #####
