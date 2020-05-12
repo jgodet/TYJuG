@@ -1,6 +1,14 @@
 #Tests 5#
 
 ########
+# Vecteur comprenant liste des NCTid correspondant aux queries
+# getStudyFields()
+#####
+## Exemple
+#####
+NCT<-getStudyFields(expr="COVID+AND+hydroxychloroquine", fields=c("NCTId"))
+NCT
+########
 # Sortir outcomes d'un fichier XML 
 # outcomesXML()
 #####
@@ -12,17 +20,12 @@ outcomesXML<-function(file){
   return(XMLdf)
 }
 #####
-## Tests
+## Exemples
+#####
 EC1_outcomes <- outcomesXML(file = "NCT03478891.xml")
 View(EC1_outcomes)
-
-########
-# Vecteur comprenant liste des NCTid correspondant aux queries
-# getStudyFields()
-#####
-## Exemple
-NCT<-getStudyFields(expr="COVID+AND+hydroxychloroquine", fields=c("NCTId"))
-
+EC2_outcomes <- outcomesXML(file = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail/AllPublicXML/NCT0434xxxx/NCT04349228.xml")
+View(EC2_outcomes)
 ########
 # Chemin d'accès vers 1 fichier
 # pathFile()
@@ -38,8 +41,6 @@ pathFile<-function(NCTid, locPath)
 }
 #####
 ## Exemples
-########
-# Draft
 #####
 ei1<-pathFile(NCTid = NCT[3], locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
 ei1
@@ -47,6 +48,29 @@ ei1
 ei2<-pathFile(NCT="NCT04150042", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
 ei2
 #' path<-pathFile(NCT="NCT04150042", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
+ei3 <- pathFile(NCT="NCT04371406", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
+ei3
+########
+# Sortir outcomes a partir de queries
+# clintri_outcomes()
+#####
+clintri_outcomes<-function(expr, fields = "NCTid", locPath){
+  NCTid.list <- getStudyFields(expr = expr, fields = fields)
+  NCTid.list <- NCTid.list[,1]
+  for(i in 1:length(NCTid.list)){
+    xml.file <- pathFile(NCTid = NCTid.list[i], locPath = locPath)
+    outcomes <- rbind(outcomesXML(file = xml.file))
+  }
+}
+
+#####
+# Tests
+#####
+EC_OC <- clintri_outcomes(expr = "COVID+AND+hydroxychloroquine", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
+
+########
+# Draft
+#####
 
 pathDF<-function(nr, lp){
   for(i in 1:length(nr)){
