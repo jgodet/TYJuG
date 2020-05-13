@@ -1,4 +1,4 @@
-#' urlFile()
+#' urlCTFile()
 #' Written by TaiohY
 #' May13 2020
 
