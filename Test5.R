@@ -1,14 +1,15 @@
 #Tests 5#
-
+qnorm
 ########
 # Vecteur comprenant liste des NCTid correspondant aux queries
 # getStudyFields()
 #####
 ## Exemple
 #####
-NCT<-getStudyFields(expr="COVID+AND+hydroxychloroquine", fields=c("NCTId"))
+NCT<-getStudyFields(expr="COVID+AND+hydroxychloroquine", fields=c("NCTId"), max_rnk = 1000)
 NCT
-
+NCT2<-getStudyFields(expr="FAVIPIRAVIR", fields=c("NCTId"),max_rnk=50)
+NCT2
 ########
 # Sortir outcomes d'un fichier XML 
 # outcomesXML()
@@ -57,19 +58,24 @@ ei3
 # Sortir outcomes a partir de queries
 # clintri_outcomes()
 #####
-clintri_outcomes<-function(expr, fields = "NCTid", locPath){
-  NCTid.list <- getStudyFields(expr = expr, fields = fields)
+clintri_outcomes<-function(expr, fields = "NCTid", locPath, max_rnk = NULL){
+  NCTid.list <- getStudyFields(expr = expr, fields = fields, max_rnk = max_rnk)
   NCTid.list <- NCTid.list[,1]
+  outcomes <- vector()
   for(i in 1:length(NCTid.list)){
     xml.file <- pathFile(NCTid = NCTid.list[i], locPath = locPath)
-    outcomes <- rbind(outcomesXML(file = xml.file))
+    outcomes <- merge(outcomes, outcomesXML(file = xml.file), all = T)
   }
-  return(outcomes)
+  outcomes
 }
+
 #####
 # Tests
 #####
-EC_OC <- clintri_outcomes(expr = "COVID+AND+hydroxychloroquine", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail")
+EC_OC <- clintri_outcomes(expr = "COVID+AND+hydroxychloroquine", locPath = "/Users/taiohy/documents/mes documents/fac/projet professionnel/espace de travail", max_rnk = 9)
+View(EC_OC)
+NCT<-getStudyFields(expr="COVID+AND+hydroxychloroquine", fields=c("NCTId"), max_rnk = 9)
+NCT
 
 ########
 # Draft
