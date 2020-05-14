@@ -13,17 +13,15 @@ outcomesXML_web<-function(NCTid){
   urlCTxml <- urlCTFile(NCTid = NCTid)
   File<-httr::GET(url = urlCTxml)
   parsedXML <- XML::xmlParse(file= httr::content(File, "text"))
+  
   nodesetPO <- XML::getNodeSet(doc = parsedXML, path= "//primary_outcome")
   XMLdfPO <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetPO)
-  for(i in 1:nrow(XMLdfPO)){
-    XMLdfPO$Type="Primary outcome"
-  }
+  XMLdfPO$Type="Primary outcome"
+  
   nodesetSO <- XML::getNodeSet(doc = parsedXML, path = "//secondary_outcome")
   XMLdfSO <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetSO)
-  if(is.null(XMLdfSO[1,1])==F){
-    for(i in 1:nrow(XMLdfSO)){
-      XMLdfSO$Type="Secondary outcome"
-    }
+  if(!is.null(XMLdfSO[1,1])){
+    XMLdfSO$Type="Secondary outcome"
     XMLdf <- merge(XMLdfPO, XMLdfSO, all=T)
   }
   else XMLdf <- XMLdfPO
@@ -34,5 +32,3 @@ outcomesXML_web<-function(NCTid){
   }
   return(XMLdf)
 }
-
-?httr
