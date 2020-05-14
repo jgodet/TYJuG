@@ -10,19 +10,23 @@ outcomesXML<-function(file){
   parsedXML <- XML::xmlParse(file = file)
   nodesetPO <- XML::getNodeSet(doc = parsedXML, path= "//primary_outcome")
   XMLdfPO <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetPO)
-  XMLdfPO$Type="Primary outcome"
-  
-  nodesetSO <- XML::getNodeSet(doc = parsedXML, path = "//secondary_outcome")
-  XMLdfSO <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetSO)
-  if(!is.null(XMLdfSO[1,1])){
-   XMLdfSO$Type <- "Secondary outcome"
-   XMLdf <- merge(XMLdfPO, XMLdfSO, all=T)
+  if(is.null(XMLdfPO[1,1])){
+    XMLdfPO <- NULL
   }
-  else XMLdf <- XMLdfPO
-  NCTidNodes <- XML::getNodeSet(doc = parsedXML,path = "//id_info/nct_id")
-  id_info_df <- XML::xmlToDataFrame(doc = parsedXML, nodes = NCTidNodes)
-  for(i in 1:nrow(XMLdf)){
-    XMLdf$NCTid=id_info_df[1,1]
+  else {
+    XMLdfPO$Type="Primary outcome"
+    nodesetSO <- XML::getNodeSet(doc = parsedXML, path = "//secondary_outcome")
+    XMLdfSO <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetSO)
+    if(!is.null(XMLdfSO[1,1])){
+      XMLdfSO$Type <- "Secondary outcome"
+      XMLdf <- merge(XMLdfPO, XMLdfSO, all=T)
+      }
+    else XMLdf <- XMLdfPO
+    NCTidNodes <- XML::getNodeSet(doc = parsedXML,path = "//id_info/nct_id")
+    id_info_df <- XML::xmlToDataFrame(doc = parsedXML, nodes = NCTidNodes)
+    for(i in 1:nrow(XMLdf)){
+      XMLdf$NCTid=id_info_df[1,1]
+      }
+    return(XMLdf)
   }
-  return(XMLdf)
 }
