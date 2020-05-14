@@ -1,4 +1,4 @@
-#' clintri_outcomes
+#' clintri_outcomes_web
 #' written by TaiohY
 #' May 13 2020
 
@@ -10,7 +10,7 @@
 #' @example clintri_outcomes(expr = "COVID+AND+hydroxychloroquine", locPath = "/Users/taiohy/Documents/", max_rnk = 20)
 
 
-clintri_outcomes<-function(expr, fields = "NCTid", locPath, max_rnk = NULL){
+clintri_outcomes_web<-function(expr, fields = "NCTid", locPath, max_rnk = NULL){
   NCTid.list <- getStudyFields(expr = expr, fields = fields, max_rnk = max_rnk)
   NCTid.list <- NCTid.list[,1]
   outcomes <- NULL
