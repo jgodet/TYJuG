@@ -11,7 +11,7 @@ outcomesXML<-function(file){
   nodesetPO <- XML::getNodeSet(doc = parsedXML, path= "//primary_outcome")
   XMLdfPO <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetPO)
   if(is.null(XMLdfPO[1,1])){
-    XMLdfPO <- NULL
+    XMLdf <- NULL
   }
   else {
     XMLdfPO$Type="Primary outcome"
