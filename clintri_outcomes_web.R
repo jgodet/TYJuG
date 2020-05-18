@@ -13,9 +13,6 @@
 clintri_outcomes_web<-function(expr, fields = "NCTid", max_rnk = NULL){
   NCTid.list <- getStudyFields(expr = expr, fields = fields, max_rnk = max_rnk)
   table<-mapply(FUN=outcomesXML_web, NCTid.list[1:nrow(NCTid.list),])
-  outcomes <- NULL
-  for(i in 1:length(table)){
-    outcomes<- merge(outcomes,table[[i]], all=T)
-  }
+  outcomes<-data.table::rbindlist(table, fill = T)
   outcomes
 }
