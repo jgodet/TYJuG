@@ -10,15 +10,10 @@
 #' @example clintri_outcomes(expr = "COVID+AND+hydroxychloroquine", locPath = "/Users/taiohy/Documents/", max_rnk = 20)
 
 
-clintri_outcomes<-function(expr, fields = "NCTid", locPath, max_rnk = NULL){
+clintri_outcomes<-function(expr, fields = "NCTid", dirBase, max_rnk = NULL){
   NCTid.list <- getStudyFields(expr = expr, fields = fields, max_rnk = max_rnk)
-  NCTid.list <- NCTid.list[,1]
-  outcomes <- NULL
-  for(i in 1:length(NCTid.list)){
-    xml.file <- pathFile(NCTid = NCTid.list[i], locPath = locPath)
-    outcomes.df <- outcomesXML(file = xml.file)
-    outcomes <- merge(outcomes, outcomes.df, all=T)
-  }
+  files.paths <- mapply(NCTid.list, FUN = pathFile)
+  outcomes <- mapply(files.paths, FUN = outcomesXML)
   outcomes
 }
 
