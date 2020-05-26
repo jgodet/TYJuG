@@ -67,3 +67,19 @@ resume_bigrams_counts <- resume_bigrams_filtered %>%
   count(word1, word2, sort = T)
 
 resume_bigrams_counts
+
+resume_bigrams_united <- resume_bigrams_filtered %>%
+  unite(bigram, word1, word2, sep=" ")
+
+resume_bigrams_united
+
+mostCommonBigrams <- resume_bigrams_united %>%
+  count(bigram,sort = T) %>%
+  filter(n>0)%>%
+  mutate(bigram = reorder(bigram,n))%>%
+  ggplot(aes(bigram,n))+
+  geom_col()+
+  xlab(NULL)+
+  coord_flip()
+
+mostCommonBigrams
