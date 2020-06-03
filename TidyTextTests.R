@@ -83,3 +83,19 @@ mostCommonBigrams <- resume_bigrams_united %>%
   coord_flip()
 
 mostCommonBigrams
+
+#One Hot encoding
+
+OHtidyResume <- tidyResume
+
+for(unique_value in unique(OHtidyResume$word)){
+  OHtidyResume[paste(unique_value)]<-ifelse(OHtidyResume$word==unique_value, 1,0)
+}
+
+OHtidyResume
+
+OHresume_bigrams <- resume_bigrams
+for(unique_value in unique(OHresume_bigrams$bigram)){
+  OHresume_bigrams[paste(unique_value)]<-ifelse(OHresume_bigrams$bigram==unique_value, 1,0)
+}
+OHresume_bigrams
