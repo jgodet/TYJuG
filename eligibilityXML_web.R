@@ -2,8 +2,8 @@
 #' written by TaiohY
 #' May 18 2020
 
-#' Return as a Data Frame eligibility criteria of a clinical trial from .xml file
-#' @param file .xml file of clinical trial 
+#' Return as a Data Frame eligibility criteria of a clinical trial from clinicaltraials.gov database
+#' @param NCTid 
 #' @example eligibilityXML_web(NCTid = "NCT03478891")
 
 eligibilityXML_web <- function (NCTid){
