@@ -51,7 +51,7 @@ OH_BDD <- summarise_all(OH_BDD[,-2], funs(sum))
 mat2 <- OH_BDD[,-1]
 row.names(mat2) <- OH_BDD$id
 # dim(mat2)
-# [1] 300 7639
+# [1] 400 8497
 
 #tSNE####
 tsne_out1 <- Rtsne(mat, pca=F, perplexity = 133,theta = 0.0)
