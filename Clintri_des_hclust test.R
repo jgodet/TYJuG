@@ -74,7 +74,7 @@ plot(hc_CTdes,hang = 1)
 
 
 
-#alternative JG
+#alternative JG####
 #########################
 #J'en prends 10 de plus pour cross valider ensuite
 CT_des1 <- clintri_descriptions_web("COVID", max_rnk = 40)
@@ -88,8 +88,7 @@ daten <- bind_rows(CT_des1, CT_des2)
 daten <- daten %>% mutate_at(c("NCTid", "Grp"), factor)
 
 #regrouper les id identiques
-daten <- daten %>% group_by(NCTid) %>% mutate(text = paste0(textblock, collapse = "")) 
-
+daten <- daten %>% group_by(NCTid) %>% mutate(text = paste0(textblock, collapse = " ")) 
 daten2 <- distinct(daten[,-1])
 dim(daten2)
 
