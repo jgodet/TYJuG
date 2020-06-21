@@ -28,23 +28,25 @@ library("dplyr")
 library("readr")
 library("stringr")
 
-CT_des1 <- clintri_descriptions_web("COVID", max_rnk = 100)
-CT_des2 <- clintri_descriptions_web("Acute+lymphoblastic+leukemia", max_rnk = 100)
-CT_des1$Grp <- "COVID" 
-CT_des2$Grp <- "LAL" 
+CT_des1 <- clintri_descriptions_web("COVID", max_rnk = 30)
+CT_des2 <- clintri_descriptions_web("Acute+lymphoblastic+leukemia", max_rnk = 30)
 BDD <- bind_rows(CT_des1, CT_des2) 
 BDD <- BDD %>% 
   group_by(NCTid) %>% 
   mutate(text = paste0(textblock, collapse = " "))
 BDD <- distinct(BDD[,-1])
 descriptions <- BDD$text
+descriptions <- str_replace_all(descriptions, "\n", "")
+#descriptions <- iconv(descriptions, to = "UTF-8")
+head(descriptions,1)
 unique_words <- length(unique(unlist(str_split(descriptions, " "))))
 unique_words
 
-library("tensorflow")
 library("keras")
+library("tensorflow")
+install_tensorflow(version = "1.12")
 
-tokenizer <- text_tokenizer(num_word = 20000)
+tokenizer <- text_tokenizer(num_word = 5000)
 tokenizer %>% fit_text_tokenizer(descriptions)
 
 library("reticulate")
@@ -103,6 +105,6 @@ summary(model)
 history <- model %>%
   fit_generator(
     skipgrams_generator(descriptions, tokenizer, skip_window, negative_samples),
-    steps_per_epoch = 50,
-    epochs = 10
+    steps_per_epoch = 100,
+    epochs = 4
   )
