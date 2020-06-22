@@ -1,14 +1,15 @@
 #Latent Dirichlet Allocation (LDA) with tidytext
 
-CT_des1 <- clintri_descriptions_web("COVID", max_rnk = 10)
-CT_des2 <- clintri_descriptions_web("Acute+lymphoblastic+leukemia", max_rnk = 10)
-CT_des3 <- clintri_descriptions_web("Parkinson", max_rnk = 10)
-CT_des4 <- clintri_descriptions_web("Flu", max_rnk = 10)
+CT_des1 <- clintri_descriptions_web("COVID", max_rnk = 40)
+CT_des2 <- clintri_descriptions_web("Acute+lymphoblastic+leukemia", max_rnk = 40)
+CT_des3 <- clintri_descriptions_web("Parkinson", max_rnk = 40)
+CT_des4 <- clintri_descriptions_web("Flu", max_rnk = 40)
 CT_des1$Grp <- "COVID" 
 CT_des2$Grp <- "LAL" 
 CT_des3$Grp <- "Parkinson"
 CT_des4$Grp <- "Flu"
 library("dplyr")
+#BDD <- bind_rows(CT_des1, CT_des2)
 BDD <- bind_rows(CT_des1, CT_des2, CT_des3, CT_des4) 
 BDD <- BDD %>% 
   group_by(NCTid) %>% 
@@ -17,6 +18,8 @@ BDD <- distinct(BDD[,-1])
 library("tidytext")
 library("tidyr")
 data("stop_words")
+BDD$text <- trimws(gsub("\\w*[0-9]+\\w*\\s*", "", BDD$text))
+head(BDD$text)
 
 BDD_td <- BDD %>%
   unnest_tokens(word, text, token = "words")%>%
@@ -25,18 +28,13 @@ BDD_td <- BDD %>%
 BDD_frq <- BDD_td %>%
   count(NCTid, word)%>%
   group_by(NCTid)
-View(BDD_frq)
-View(BDD_td)
 
 library(topicmodels)
-
-#data("AssociatedPress")
-#AssociatedPress
 
 BDD_dtm <- BDD_frq %>%
   cast_dtm(NCTid, word, n)
 
-BDD_lda <- LDA(BDD_dtm, k = 4, control = list(seed = 1234))
+BDD_lda <- LDA(BDD_dtm, k = 4)
 BDD_lda
 
 BDD_topics <- tidy(BDD_lda, matrix = "beta")
