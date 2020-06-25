@@ -76,6 +76,8 @@ beta_spread <- BDD_topics %>%
   spread(topic, beta) %>%
   filter(topic1 > .001 | topic2 > .001 | topic3 > .001 | topic4 > .001)
 
+beta_spread
+
 gamma_spread <- BDD_documents %>%
   mutate(topic = paste0("topic", topic)) %>%
   spread(topic, gamma) %>%
@@ -89,7 +91,7 @@ library("scatterpie")
 gamma_spread$x <- tsne_out1$Y[,1]
 gamma_spread$y <- tsne_out1$Y[,2]
 BDD_scatterpie <- ggplot() + geom_scatterpie(aes(x=x, y = y, group = document),data = gamma_spread,
-                  cols = c("topic1", "topic2", "topic3", "topic4"), color=NA) + coord_equal()
+                  cols = c("topic1", "topic2", "topic3", "topic4"), color=NA, alpha = 0.3) + coord_equal()
 
 BDD_scatterpie
 
