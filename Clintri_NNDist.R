@@ -76,4 +76,10 @@ Neighbor
 #$NCTid
 #[1] "NCT00490633" "NCT01403649" "NCT01532986" "NCT03830190" "NCT03888287" "NCT04403672"
 
-
+# Titre des études qui en sortent : 
+#Intervention Study of Face Mask and Hand Sanitizer to Reduce Influenza Transmission (M-FLU)
+#Collaborative Efforts to Increase Flu Vaccination (CollabFlu)
+#Randomized Trial to Test the "Coordinated Care for Health Promotion and Activities in Parkinson's Disease" Intervention in the VA
+#Cost-effectiveness of Nursing Interventions for Patients With PD
+#Parkinson's Disease Inpatient Clinical Knowledge and Management
+#Performance Evaluation of RealDetect™ COVID-19 RT-PCR Kit for the Detection of SARS-CoV-2 Virus
