@@ -15,8 +15,6 @@ descriptionXML_web <- function (NCTid){
   XMLdfDes <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetDes)
   NCTidNodes <- XML::getNodeSet(doc = parsedXML,path = "//id_info/nct_id")
   id_info_df <- XML::xmlToDataFrame(doc = parsedXML, nodes = NCTidNodes)
-  for(i in 1:nrow(XMLdfDes)){
-    XMLdfDes$NCTid=id_info_df[1,1]
-  }
+  XMLdfDes$NCTid=id_info_df[1,1]
   return(XMLdfDes)
 }
