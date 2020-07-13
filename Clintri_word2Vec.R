@@ -46,9 +46,18 @@ for(i in 3:51){
 DT1[[i]] <- as.numeric(DT1[[i]])
 }
 summary(DT1)
+
 DT2 <- summarize_all(DT1, funs(sum))
+DT3 <- summarize_all(DT1, funs(mean))
 library(Rtsne)
 
 tsne_out1 <- Rtsne(DT2, pca=F, perplexity = 50,theta = 0.0)
 plot(tsne_out1$Y, col = as.numeric(as.factor(data$exp)))
 
+tsne_out2 <- Rtsne(DT3, pca=F, perplexity = 50,theta = 0.0)
+plot(tsne_out1$Y, col = as.numeric(as.factor(data$exp)))
+DT
+library("spatstat")
+DT <- ppx(DT)
+Dist_DT <- nndist(DT, k = 5)
+Dist_DT

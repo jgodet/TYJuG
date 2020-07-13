@@ -12,10 +12,14 @@ titlesXML_web<-function(NCTid){
   parsedXML <- XML::xmlParse(file= httr::content(File, "text"))
   nodesetOT <- XML::getNodeSet(doc = parsedXML, path= "//official_title")
   XMLdf <- XML::xmlToDataFrame(doc=parsedXML, nodes = nodesetOT)
-  colnames(XMLdf) <- "Title"
-  NCTidNodes <- XML::getNodeSet(doc = parsedXML,path = "//id_info/nct_id")
-  id_info_df <- XML::xmlToDataFrame(doc = parsedXML, nodes = NCTidNodes)
-  XMLdf$NCTid=id_info_df[1,1]
-  
+  if(is.null(XMLdf[1,1])){
+    XMLdf <- NULL
+  }
+  else{
+    colnames(XMLdf) <- "Title"
+    NCTidNodes <- XML::getNodeSet(doc = parsedXML,path = "//id_info/nct_id")
+    id_info_df <- XML::xmlToDataFrame(doc = parsedXML, nodes = NCTidNodes)
+    XMLdf$NCTid=id_info_df[1,1]
+  }
   return(XMLdf)
 }

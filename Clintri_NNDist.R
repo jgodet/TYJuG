@@ -7,6 +7,7 @@ library("topicmodels")
 library("ggplot2")
 library("purrr")
 library("Rtsne")
+library("scatterpie")
 
 #Préparation des données avec LDA et t-sne
 CT_des1 <- clintri_descriptions_web("COVID", max_rnk = 50)
@@ -43,9 +44,6 @@ tsne_out1 <- Rtsne(gamma_spread, pca=F, perplexity = 10,theta = 0.0)
 
 gamma_spread$x <- tsne_out1$Y[,1]
 gamma_spread$y <- tsne_out1$Y[,2]
-# data <- NULL
-data <- gamma_spread[c(1, 6, 7)]
-data
 
 #scatterpie
 BDD_scatterpie <- ggplot() + 
@@ -62,6 +60,13 @@ library("spatstat")
 
 # NNDist : permet de calculer la distance des plus proches voisins pour chaque point
 # k = nombre de voisins 
+
+data <- NULL
+data$document <- gamma_spread$document
+data$x <- tsne_out1$Y[,1]
+data$y <- tsne_out1$Y[,2]
+data <- as.data.frame(data)
+View(data)
 
 # test avec nombre de voisins = 5
 dist <- nndist(data[c(2,3)], k=5)
@@ -87,6 +92,8 @@ for(i in 1:nrow(data)){
 Neighbor$NCTid <- Neighbor$NCTid[!is.na(Neighbor$NCTid)]
 
 NCTid.list <- as.data.frame(Neighbor)
+NCTid.list
+NCTid.list[1:nrow(NCTid.list),]
 
 List <- NCTidToTitles_web(NCTid.list)
 View(List)
