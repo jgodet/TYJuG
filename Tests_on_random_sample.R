@@ -3,16 +3,16 @@ require(XML)
 
 path <- "/Users/taiohy/documents/mes documents/Fac/Projet Professionnel/Stage/Espace de travail/AllPublicXML"
 
-#Liste de l'ensemble des fichiers CT
+#Liste de l'ensemble des fichiers CT ####
 listF <- list.files(path, recursive = T, full.names = T, pattern = ".xml")
 listF<-unlist(listF)
 length(listF) #338999
 
-#Sélection d'un échantillon
+#Sélection d'un échantillon ####
 set.seed(78952)
 Sample <- sample(listF, size = 400)
 
-#Récupération des sommaires et des descriptions détaillées
+#Récupération des sommaires et des descriptions détaillées ####
 descriptionXML <- function (path){
   parsedXML <- XML::xmlParse(file = path)
   nodesetDes <- XML::getNodeSet(doc = parsedXML, path= c("//brief_summary","//detailed_description"))
@@ -26,7 +26,7 @@ descriptionXML <- function (path){
   else XMLdfDes <- NULL
 }
 
-#Réarrangement des données
+#Réarrangement des données ####
 require(dplyr)
 require(parallel)
 des.nVec <- mclapply(Sample, FUN = descriptionXML, mc.cores = 10)
@@ -38,7 +38,7 @@ table <- table %>%
   mutate(text = paste0(textblock, collapse = " "))
 table <- distinct(table[,-1])
 
-#Tokenization
+#Tokenization ####
 require(tidytext)
 data("stop_words")
 table$text <- trimws(gsub("\\w*[0-9]+\\w*\\s*", "", table$text))
@@ -58,7 +58,7 @@ BDD_dtm <- BDD_frq %>%
 require("topicmodels")
 BDD_lda <- LDA(BDD_dtm, k = 10)
 
-#préparation des données
+#préparation des données ####
 gamma_spread <- BDD_documents %>%
   mutate(topic = paste0("topic", topic)) %>%
   spread(topic, gamma)
@@ -71,13 +71,13 @@ require("scatterpie")
 gamma_spread$x <- tsne_out1$Y[,1]
 gamma_spread$y <- tsne_out1$Y[,2]
 
-#Scatterpie
+#Scatterpie ####
 BDD_scatterpie <- ggplot() + geom_scatterpie(aes(x=x, y = y, group = document),data = gamma_spread,
                                              cols = c(paste0("topic", 1:10, sep="")), color=NA, alpha = 0.3) + coord_equal()
 BDD_scatterpie
 
-#Plus proches voisins
-require(spatstat)
+#Plus proches voisins ####
+
 data <- NULL
 data$document <- gamma_spread$document
 data$x <- tsne_out1$Y[,1]
@@ -85,7 +85,9 @@ data$y <- tsne_out1$Y[,2]
 data <- as.data.frame(data)
 dim(data)
 
+#Compliqué pour rien ####
 # test avec nombre de voisins = 10
+#require(spatstat)
 #dist <- nndist(data[c(2,3)], k=10)
 
 # Test avec le document situé sur la xe ligne
